@@ -36,6 +36,7 @@ public class HelloControllerTest {
         mvc.perform(get("/hello"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(hello));
+        // .andExpect(status().isOK())와 .andExpect(content().string(hello))가 모두 테스트를 통과했음을 의미합니다.
     }
 
     @WithMockUser(roles="USER")
@@ -46,10 +47,10 @@ public class HelloControllerTest {
 
         mvc.perform(
                     get("/hello/dto")
-                            .param("name", name)
-                            .param("amount", String.valueOf(amount)))
+                            .param("name", name) //API 테스트할 때 사용될 요청 파라미터를 설정합니다. 단, 값은 String만 허용됩니다.
+                            .param("amount", String.valueOf(amount))) //그래서 숫자/날짜 등의 데이터도 등록할 때는 문자열로 변경해야만 가능합니다.
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is(name)))
-                .andExpect(jsonPath("$.amount", is(amount)));
+                .andExpect(jsonPath("$.name", is(name))) //JSON 응답값을 필드별로 검증할 수 있는 메소드 입니다.
+                .andExpect(jsonPath("$.amount", is(amount))); //$를 기준으로 필드명을 명시합니다. 여기서는 name과 amount를 검정하니 $.name, $.amount로 검증합니다.
     }
 }

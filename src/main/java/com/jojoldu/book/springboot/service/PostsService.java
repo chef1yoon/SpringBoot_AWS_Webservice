@@ -41,7 +41,7 @@ public class PostsService {
         postsRepository.delete(posts);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true) //조회 속도가 개선되기 때문에 등록, 수정, 삭제 기능이 전혀 없는 서비스 메소드에서 사용하는것을 추천합니다.
     public PostsResponseDto findById(Long id) {
         Posts entity = postsRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id=" + id));
